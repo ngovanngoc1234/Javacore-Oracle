@@ -3,12 +3,14 @@ package chapter3;
 public class DemoDateTypeCharAndUnicodeAndBoolean {
     public static void main(String[] args) {
         System.out.println("kiểu dữ liệu char được hiểu là các ký tự thường nằm trong dấu nháy đơn  ví dụ : 'a' , '1'");
-        System.out.println("sau đây e sẽ quy đổi theo unicode từ a-z thành kiểu số nguyên");
+        System.out.println("sau đây e sẽ quy đổi từ a-z thành kiểu số nguyên");
+        char uniChar = '\u039A';
         char typeA = 'a';
         char typeZ = 'z';
-        System.out.println("khi output ra thì sẽ được quy đổi theo unicode ");
+        System.out.println("khi output ra thì sẽ được  ");
+        System.out.println("mã unicode = " + (int) uniChar);
         System.out.println("..........");
-        System.out.println(" ký tự a = " + (int) typeA);
+        System.out.println("ký tự a = " + (int) typeA);
         System.out.println("............");
         System.out.println("ký tự z = " + (int) typeZ);
         System.out.println("..........");
@@ -29,7 +31,7 @@ public class DemoDateTypeCharAndUnicodeAndBoolean {
 //        tiếp theo là kiểu boolean
         System.out.println("kiểu mặc định của biến boolean sẽ là false ");
         boolean typeBoolean = false;
-        System.out.println("kiểu boolean = "+typeBoolean);
+        System.out.println("kiểu boolean = " + typeBoolean);
         System.out.println(" boolean chỉ có 2 loại true và false");
     }
 }
