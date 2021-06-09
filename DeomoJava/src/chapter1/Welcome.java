@@ -1,3 +1,5 @@
+package chapter1;
+
 public class Welcome {
     public static void main(String[] args) {
         System.out.println(".......thuc hanh hien thi xin chao trong man hinh console......... ");

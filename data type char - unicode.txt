@@ -1,0 +1,91 @@
+phần dịch ở unicode :
+
+
+Để hiểu đầy đủ về kiểu ký tự, bạn phải biết về bảng mã Unicode
+kế hoạch. Unicode được phát minh để khắc phục những hạn chế của ký tự truyền thống
+các lược đồ mã hóa. Trước Unicode, có nhiều tiêu chuẩn khác nhau: ASCII
+ở Hoa Kỳ, ISO 8859-1 cho các ngôn ngữ Tây Âu, KOI-8 cho
+Tiếng Nga, GB18030 và BIG-5 cho tiếng Trung, v.v. Điều này gây ra hai vấn đề.
+Một giá trị mã cụ thể tương ứng với các chữ cái khác nhau trong bảng mã khác nhau
+các kế hoạch. Hơn nữa, các bảng mã cho các ngôn ngữ có bộ ký tự lớn có
+độ dài thay đổi: Một số ký tự phổ biến được mã hóa dưới dạng byte đơn, những ký tự khác
+yêu cầu hai hoặc nhiều byte.
+Unicode được thiết kế để giải quyết những vấn đề này. Khi nỗ lực thống nhất
+bắt đầu vào những năm 1980, một mã 2 byte cố định là quá đủ để mã hóa tất cả
+các ký tự được sử dụng trong tất cả các ngôn ngữ trên thế giới, còn chỗ trống để mở rộng trong tương lai — hoặc như vậy thì mọi người đều nghĩ vào thời điểm đó. Năm 1991, Unicode 1.0 được phát hành,
+sử dụng ít hơn một nửa trong số 65.536 giá trị mã có sẵn. Java được thiết kế
+từ đầu để sử dụng các ký tự Unicode 16 bit, đây là một bước tiến lớn
+hơn các ngôn ngữ lập trình khác sử dụng các ký tự 8 bit.
+Thật không may, theo thời gian, điều không thể tránh khỏi đã xảy ra. Unicode đã phát triển vượt quá 65.536
+nhân vật, chủ yếu là do bổ sung một tập hợp rất lớn các ý tưởng được sử dụng
+cho tiếng Trung, tiếng Nhật và tiếng Hàn. Bây giờ, loại ký tự 16-bit không đủ để
+mô tả tất cả các ký tự Unicode.
+Chúng tôi cần một chút thuật ngữ để giải thích cách giải quyết vấn đề này trong Java,
+bắt đầu với Java SE 5.0. Điểm mã là giá trị mã được liên kết với
+3.3 Các kiểu dữ liệu 51a ký tự trong một lược đồ mã hóa. Trong tiêu chuẩn Unicode, các điểm mã là
+được viết bằng hệ thập lục phân và có tiền tố là U +, chẳng hạn như U + 0041 cho điểm mã của
+ký tự La tinh A. Unicode có các điểm mã được nhóm thành 17 mặt phẳng mã.
+Mặt phẳng mã đầu tiên, được gọi là mặt phẳng đa ngôn ngữ cơ bản, bao gồm "cổ điển"
+Các ký tự Unicode với mã điểm từ U + 0000 đến U + FFFF. Mười sáu máy bay bổ sung,
+với các điểm mã U + 10000 đến U + 10FFFF, giữ các ký tự phụ.
+Mã hóa UTF-16 đại diện cho tất cả các điểm mã Unicode có độ dài thay đổi
+mã. Các ký tự trong mặt phẳng đa ngôn ngữ cơ bản được biểu diễn dưới dạng 16 bit
+giá trị, được gọi là đơn vị mã. Các ký tự bổ sung được mã hóa thành liên tiếp
+các cặp đơn vị mã. Mỗi giá trị trong một cặp mã hóa như vậy nằm trong một phạm vi
+trong số 2048 giá trị chưa sử dụng của mặt phẳng đa ngôn ngữ cơ bản, được gọi là vùng thay thế
+(U + D800 đến U + DBFF cho đơn vị mã đầu tiên, U + DC00 đến U + DFFF cho đơn vị mã thứ hai). Điều này
+khá thông minh, bởi vì bạn có thể biết ngay một đơn vị mã
+mã hóa một ký tự duy nhất hoặc nó là phần đầu tiên hoặc phần thứ hai của phần bổ sung
+tính cách. Ví dụ: (ký hiệu toán học cho tập hợp các octonion,
+http://math.ucr.edu/home/baez/octonion) có mã điểm U + 1D546 và được mã hóa bởi hai
+đơn vị mã U + D835 và U + DD46. (Xem http://en.wikipedia.org/wiki/UTF-16 để biết mô tả về
+thuật toán mã hóa.)
+Trong Java, kiểu char mô tả một đơn vị mã trong bảng mã UTF-16.
+Khuyến nghị mạnh mẽ của chúng tôi là không sử dụng kiểu char trong các chương trình của bạn trừ khi
+bạn thực sự đang thao tác các đơn vị mã UTF-16. Bạn hầu như luôn luôn tốt hơn
+tắt xử lý các chuỗi (mà chúng ta sẽ thảo luận trong Phần 3.6, “Chuỗi”, trên trang 65) là
+các kiểu dữ liệu trừu tượng.
+
+
+
+Phần dịch data type Char :
+
+
+Kiểu char ban đầu được dùng để mô tả các ký tự riêng lẻ. Tuy nhiên,
+Đây không còn là trường hợp. Ngày nay, một số ký tự Unicode có thể được mô tả
+với một giá trị ký tự và các ký tự Unicode khác yêu cầu hai giá trị ký tự. Đọc
+phần tiếp theo cho các chi tiết đẫm máu.
+Giá trị chữ của kiểu char được đặt trong dấu ngoặc kép. Ví dụ: 'A' là
+hằng ký tự có giá trị 65. Nó khác với "A", một chuỗi có chứa
+ký tự đơn. Giá trị của kiểu char có thể được biểu thị dưới dạng giá trị thập lục phân
+chạy từ \ u0000 đến \ uFFFF. Ví dụ: \ u2122 là biểu tượng nhãn hiệu (™) và \ u03C0
+là chữ cái Hy Lạp pi (π).
+Bên cạnh trình tự thoát \ u, có một số trình tự thoát dành cho các
+các ký tự, như trong Bảng 3.3. Bạn có thể sử dụng các chuỗi thoát này bên trong
+các ký tự và chuỗi ký tự được trích dẫn, chẳng hạn như '\ u2122' hoặc "Xin chào \ n". Trình tự thoát \ u (nhưng không có trình tự thoát nào khác) thậm chí có thể được sử dụng bên ngoài trích dẫn
+hằng ký tự và chuỗi ký tự. Ví dụ,
+public static void main (String \ u005B \ u005D args)
+là hoàn toàn hợp pháp— \ u005B và \ u005D là các mã hóa cho [và].
+Bảng 3.3 Trình tự thoát cho các ký tự đặc biệt
+
+
+Tên	 chuỗi thoát 		Giá trị Unicode
+\ b 	 Backspace 		\ u0008
+\ t	 Tab 			\ u0009
+\ n	 Linefeed 		\ u000a
+\ r	 Vận chuyển trở lại 	\ u000d
+\ "	 Dấu ngoặc kép 		\ u0022
+\ '	 Một dấu ngoặc kép 	\ u0027
+\\ 	 Dấu gạch chéo ngược 	\ u005c
+
+
+50 Chương 3 Các cấu trúc lập trình cơ bản trong Java THẬN TRỌNG: Các chuỗi thoát Unicode được xử lý trước khi mã được phân tích cú pháp.
+Ví dụ: "\ u0022 + \ u0022" không phải là một chuỗi bao gồm một dấu cộng bao quanh
+bằng dấu ngoặc kép (U + 0022). Thay vào đó, \ u0022 được chuyển đổi thành "trước
+phân tích cú pháp, tạo ra "" + "" hoặc một chuỗi trống.
+Thậm chí, bạn phải cẩn thận với những bình luận bên trong. Lời bình luận
+// \ u00A0 là một dòng mới
+tạo ra một lỗi cú pháp vì \ u00A0 được thay thế bằng một dòng mới khi chương trình
+được đọc. Tương tự, một bình luận
+// Nhìn vào bên trong c: \ users
+dẫn đến lỗi cú pháp vì \ u không được theo sau bởi bốn chữ số hex.
