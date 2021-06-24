@@ -1,4 +1,4 @@
-package chapter3;
+package chapter3.datatype;
 
 public class DemoDateTypeCharAndUnicodeAndBoolean {
     public static void main(String[] args) {
